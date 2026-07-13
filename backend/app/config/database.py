@@ -31,10 +31,16 @@ def _load_env_file() -> None:
 
 _load_env_file()
 
-DATABASE_URL = os.getenv("DATABASE_URL") or "sqlite:///./app.db"
+DATABASE_URL = (
+    os.getenv("DATABASE_URL")
+    or os.getenv("DB_URL")
+    or os.getenv("POSTGRES_URL")
+    or os.getenv("POSTGRESQL_URL")
+    or "sqlite:///./app.db"
+)
 
-if not os.getenv("DATABASE_URL"):
-    print("Warning: DATABASE_URL not set. Using local SQLite database at app.db")
+if not any(os.getenv(name) for name in ["DATABASE_URL", "DB_URL", "POSTGRES_URL", "POSTGRESQL_URL"]):
+    print("Warning: no database URL environment variable was found. Using local SQLite database at app.db")
 
 engine = create_engine(DATABASE_URL)
 
