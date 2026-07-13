@@ -1,0 +1,10 @@
+{
+  "description": "Streamline data entry with a user-friendly interface that auto-fills fields, enhancing efficiency for businesses and individuals alike.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
