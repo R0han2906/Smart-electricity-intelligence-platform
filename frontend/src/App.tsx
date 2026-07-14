@@ -20,6 +20,8 @@ import { Line } from 'react-chartjs-2';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
+const API_URL = "https://electricity-intelligence-platform-backend.onrender.com/";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
