@@ -38,6 +38,13 @@ export default defineConfig({
     strictPort: true,
     hmr: isFigmaSandbox ? { clientPort: 443 } : undefined,
     watch: { ignored: ['**/.figma/**'] },
+    proxy: {
+      '/api': {
+        target: 'https://electricity-intelligence-platform-backend.onrender.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      }
+    }
   },
   preview: {
     host: '0.0.0.0',
