@@ -37,6 +37,14 @@ Electricity bills in India — and particularly under **MSEDCL/MERC telescopic t
 
 
 
+
+
+
+
+
+
+
+
 | Environment | Link | Status |
 |---|---|---|
 | Frontend | `https://smart-electricity-intelligence-plat.vercel.app/` | 🟢 |
