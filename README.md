@@ -12,9 +12,11 @@
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Deployed](https://img.shields.io/badge/Status-Live-brightgreen)](#-live-demo)
 
-[Live Demo](#-live-demo) · [Documentation](#-api-reference) · [Report Bug](../../issues) · [Request Feature](../../issues)
+[Live Demo](https://smart-electricity-intelligence-plat.vercel.app/) · [Documentation](#-api-reference) · [Report Bug](../../issues) · [Request Feature](../../issues)
 
 </div>
+
+
 
 ---
 
@@ -29,11 +31,16 @@ Electricity bills in India — and particularly under **MSEDCL/MERC telescopic t
 ---
 
 ## 🎯 Live Demo
+<img width="1915" height="907" alt="image" src="https://github.com/user-attachments/assets/b7a03617-a558-4c77-8b7e-c22117653b47" />
+<img width="671" height="757" alt="image" src="https://github.com/user-attachments/assets/57b491e9-c5f4-4ec2-a14a-1a6bc90c6e38" />
+<img width="1900" height="909" alt="image" src="https://github.com/user-attachments/assets/3be5f1d5-f251-4fdc-80be-03b33e8f2e1a" />
+
+
 
 | Environment | Link | Status |
 |---|---|---|
-| Frontend | `<ADD_YOUR_DEPLOYED_FRONTEND_URL>` | 🟢 |
-| Backend API | `<ADD_YOUR_RENDER_BACKEND_URL>/docs` | 🟢 |
+| Frontend | `https://smart-electricity-intelligence-plat.vercel.app/` | 🟢 |
+| Backend API | `https://electricity-intelligence-platform-backend.onrender.com/docs` | 🟢 |
 
 > **Note:** Free-tier Render backends spin down after inactivity — first request may take 30–50s to cold-start.
 
