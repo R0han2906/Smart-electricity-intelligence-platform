@@ -1,159 +1,234 @@
-# ⚡ Smart Electricity Intelligence Platform
+<div align="center">
 
-An AI-powered SaaS analytics dashboard designed to help household electricity consumers monitor consumption, forecast next month's usage, estimate monthly utility bills, compute ecological carbon impacts, and view actionable energy-saving insights.
+# ⚡ Electricity Intelligence Platform
 
----
+**AI-powered consumption forecasting, tariff-slab billing estimation, and carbon-impact analytics for residential electricity consumers.**
 
-## 📌 Table of Contents
-- [Problem Statement](#-problem-statement)
-- [The Solution](#-the-solution)
-- [System Architecture](#-system-architecture)
-- [Tech Stack](#-tech-stack)
-- [Project Directory Structure](#-project-directory-structure)
-- [Quick Start Guide](#-quick-start-guide)
-  - [Prerequisites](#prerequisites)
-  - [1. Backend Setup](#1-backend-setup)
-  - [2. Frontend Setup](#2-frontend-setup)
-- [Key Features](#-key-features)
+[![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Frontend-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Render-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Deployed](https://img.shields.io/badge/Status-Live-brightgreen)](#-live-demo)
 
----
+[Live Demo](#-live-demo) · [Documentation](#-api-reference) · [Report Bug](../../issues) · [Request Feature](../../issues)
 
-## 🔍 Problem Statement
-
-Modern energy grids and residential consumers face several critical challenges:
-1. **Lack of Predictive Visibility**: Consumers only find out about their electricity expenses at the end of the billing cycle when the utility bill arrives.
-2. **Complex Progressive Tariffs**: Billing structures (such as the Maharashtra State Electricity Distribution tariff) utilize progressive tiers or "slabs" where unit rates jump significantly at specific thresholds (e.g. ₹3.50/unit to ₹11.00/unit). Crossing these thresholds without warning leads to unexpected bill spikes.
-3. **Hidden Ecological Impact**: There is a significant disconnect between consuming electricity (kWh) and understanding its actual carbon footprint (kg CO₂) and environmental consequences.
+</div>
 
 ---
 
-## 💡 The Solution
+## 📖 Overview
 
-The **Smart Electricity Intelligence Platform** bridges this information gap by:
-- **AI Forecasting**: Utilizing a Scikit-Learn Ridge Regression model trained on historical inputs (lag features) to predict next month's consumption (kWh) with high reliability.
-- **Dynamic Slab Tracking**: Running an estimator matching progressive tariff boundaries to compute upcoming bills and warning users when they approach higher rate brackets.
-- **Carbon Indexing**: Converting energy usage to carbon equivalents (kg CO₂), illustrating ecological footprint via visual metrics such as the equivalent number of mature trees required to offset emissions and equivalent vehicle travel distance.
-- **Actionable AI Insights**: Generating personalized recommendations to guide users to lower their peak loads and avoid billing slab escalations.
+Electricity bills in India — and particularly under **MSEDCL/MERC telescopic tariff structures** — are notoriously opaque. A household has no way of knowing it just crossed from a ₹3.50/unit slab into an ₹11.00/unit slab until the bill lands, sometimes weeks after the damage is done.
+
+**Electricity Intelligence Platform** closes that loop. It ingests 12 months of historical consumption, forecasts next month's usage with a trained regression model, projects the resulting bill against real slab boundaries, and translates the number into something a non-technical user actually understands — carbon output, equivalent trees, equivalent kilometers driven.
+
+> Built as a full-stack, production-deployed application — not a notebook demo. Backend is live on Render with a managed PostgreSQL instance.
 
 ---
 
-## 🌐 System Architecture
+## 🎯 Live Demo
+
+| Environment | Link | Status |
+|---|---|---|
+| Frontend | `<ADD_YOUR_DEPLOYED_FRONTEND_URL>` | 🟢 |
+| Backend API | `<ADD_YOUR_RENDER_BACKEND_URL>/docs` | 🟢 |
+
+> **Note:** Free-tier Render backends spin down after inactivity — first request may take 30–50s to cold-start.
+
+---
+
+## 🧩 Problem → Solution
+
+| Problem | This platform's answer |
+|---|---|
+| Bills are only known *after* the billing cycle ends | Ridge Regression forecast of next month's kWh, generated from 12 months of lag features |
+| Progressive tariff slabs cause silent bill spikes | A slab-matching engine that flags proximity to the next rate breakpoint *before* it's crossed |
+| kWh numbers mean nothing to most users | Conversion to kg CO₂, equivalent mature trees required for offset, and equivalent km driven |
+| No proactive guidance | Rule-based insight engine surfacing spikes, slab warnings, and reduction recommendations |
+
+---
+
+## 🏗️ System Architecture
 
 ```mermaid
 graph TD
-    A[Vite React Frontend] -->|API Calls via /api Proxy| B[FastAPI Gateway]
-    B -->|Query / Insert| C[SQLite Database]
-    B -->|Predictive Inference| D[Ridge Regression Model]
-    B -->|Calculate Tariff & Offsets| E[Analytical Services]
-    E -->|JSON Response| B
-    B -->|Dynamic Props & Charts| A
+    A[React 19 + TypeScript SPA] -->|REST calls via /api proxy| B[FastAPI Gateway]
+    B -->|SQLAlchemy ORM| C[(PostgreSQL — Render Managed)]
+    B -->|Inference| D[Ridge Regression Model]
+    B -->|Slab + Carbon Math| E[Analytics Services]
+    E -->|JSON| B
+    B -->|Charts + Insights| A
 ```
+
+**Request flow:** Frontend → `/api` proxy → FastAPI routes → service layer (forecasting / tariff / carbon) → PostgreSQL → JSON response → React charts & insight cards.
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Frontend
-- **Core**: React 19, TypeScript
-- **Build Tool**: Vite 8
-- **Styling**: Tailwind CSS v4
-- **Charts**: ChartJS & `react-chartjs-2`
-- **Routing**: React Router 7
-- **Icons**: Lucide React
+<table>
+<tr>
+<td valign="top" width="50%">
 
-### Backend
-- **Core**: Python 3.13, FastAPI
-- **Database / ORM**: SQLite, SQLAlchemy
-- **Machine Learning**: NumPy, Scikit-learn (Ridge Regression)
-- **Server**: Uvicorn
+**Frontend**
+- React 19 + TypeScript
+- Vite 8
+- Tailwind CSS v4
+- Chart.js (`react-chartjs-2`)
+- React Router 7
+- Lucide React icons
+
+</td>
+<td valign="top" width="50%">
+
+**Backend**
+- Python 3.13 + FastAPI
+- PostgreSQL + SQLAlchemy ORM
+- Scikit-learn (Ridge Regression)
+- Pydantic schema validation
+- Uvicorn ASGI server
+- Deployed on Render (managed Postgres + env-based config)
+
+</td>
+</tr>
+</table>
 
 ---
 
-## 📁 Project Directory Structure
+## 📁 Project Structure
 
 ```text
-Smart-Electricity-Intelligence-Platform/
+electricity-intelligence-platform/
 │
-├── backend/                  # FastAPI Application
+├── backend/
 │   ├── app/
-│   │   ├── config/           # DB & Env Configurations
-│   │   ├── models/           # SQLAlchemy DB Models & Model Loader
-│   │   ├── routes/           # FastAPI router endpoints (Users, Consumption, Forecast)
-│   │   ├── schema/           # Pydantic validation schemas
-│   │   └── services/         # Calculation Services (Tariff, Carbon, Forecasting)
-│   ├── model_artifacts/      # Serialized Ridge Regression model
-│   └── requirements.txt      # Backend Python dependencies
+│   │   ├── config/          # DB connection + environment config (Render-safe, no hardcoded URLs)
+│   │   ├── models/          # SQLAlchemy models + serialized model loader
+│   │   ├── routes/          # /users, /consumption, /forecast endpoints
+│   │   ├── schema/          # Pydantic request/response schemas
+│   │   └── services/        # Tariff, carbon, and forecasting business logic
+│   ├── model_artifacts/     # Trained Ridge Regression model (pickled)
+│   └── requirements.txt
 │
-└── frontend/                 # React SPA Application
+└── frontend/
     ├── src/
-    │   ├── api/              # Unified API client using Fetch
-    │   ├── components/       # Common UI elements (Card, Button, Navbar)
-    │   ├── constants/        # Route mappings and options
-    │   ├── sections/         # Screen Views (Landing, Create User, History Form, Dashboard)
-    │   ├── App.tsx           # Page Router and Application Root
-    │   └── main.tsx          # Application Entry
-    ├── vite.config.ts        # Vite build & development proxy setup
-    ├── tsconfig.json         # TypeScript compiler configurations
-    └── package.json          # Frontend JavaScript dependencies
+    │   ├── api/              # Centralized fetch client
+    │   ├── components/       # Card, Button, Navbar, shared primitives
+    │   ├── constants/        # Route + option maps
+    │   ├── sections/         # Landing, Create User, History Form, Dashboard
+    │   ├── App.tsx
+    │   └── main.tsx
+    ├── vite.config.ts
+    ├── tsconfig.json
+    └── package.json
 ```
 
 ---
 
-## 🚀 Quick Start Guide
+## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.10+ installed
-- Node.js 18+ installed
+- Python 3.10+
+- Node.js 18+
+- A PostgreSQL instance (local or managed — e.g. Render, Supabase, Neon)
 
-### 1. Backend Setup
-1. Open a terminal and navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
-2. Create and activate a Python virtual environment:
-   ```bash
-   python -m venv backend-env
-   # On Windows (PowerShell):
-   .\backend-env\Scripts\Activate.ps1
-   # On macOS/Linux:
-   source backend-env/bin/activate
-   ```
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Start the FastAPI server:
-   ```bash
-   uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
-   ```
-   The backend documentation will be accessible at `http://127.0.0.1:8000/docs`.
+### Backend
 
-### 2. Frontend Setup
-1. Open a new terminal and navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
-2. Install Node modules:
-   ```bash
-   npm install
-   ```
-3. Configure your local environment in `.env.local`:
-   ```env
-   VITE_API_URL=/api
-   ```
-4. Start the Vite dev server:
-   ```bash
-   npm run dev
-   ```
-   Open `http://localhost:8443` in your browser.
+```bash
+cd backend
+python -m venv backend-env
+source backend-env/bin/activate      # Windows: .\backend-env\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+Create `backend/.env`:
+```env
+DATABASE_URL=postgresql://<user>:<password>@<host>:<port>/<database>
+```
+
+```bash
+uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+Interactive API docs → `http://127.0.0.1:8000/docs`
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+```
+
+Create `frontend/.env.local`:
+```env
+VITE_API_URL=/api
+```
+
+```bash
+npm run dev
+```
+
+App runs at `http://localhost:8443`
+
+---
+
+## 📡 API Reference
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/users` | Create a new consumer profile |
+| `GET` | `/api/users/{id}` | Fetch profile by ID |
+| `POST` | `/api/consumption` | Submit 12-month historical usage record |
+| `GET` | `/api/consumption/{user_id}` | Retrieve stored consumption history |
+| `GET` | `/api/forecast/{user_id}` | Get next-month kWh forecast + bill estimate + carbon metrics |
+
+> Full request/response schemas available at `/docs` (Swagger UI) when the backend is running.
 
 ---
 
 ## ✨ Key Features
 
-- **Profile Manager**: Create a new energy profile or search for an existing profile by Name and Email.
-- **Consumption History Entry Form**: Input exactly 12 months of historical usage records with real-time completion tracking.
-- **Predictive Consumption Trends**: Interactive dual-dataset line graph showing historical figures alongside a dotted forecast point.
-- **Intelligent Billing Estimates**: Automatically projects the next bill based on Maharashtra electricity slab pricing rules.
-- **Ecological Impact Indicators**: Visual equivalency metrics illustrating carbon footprint equivalent trees and car driving mileage.
-- **Dynamic AI Insights**: Generates notifications alerting consumers of spikes, slab warning thresholds, and energy-saving recommendations.
+- **Profile management** — create or retrieve a consumer profile by name/email
+- **Guided history intake** — 12-month usage entry with real-time completion tracking
+- **Forecast visualization** — historical + forecasted consumption on a single interactive chart
+- **Slab-aware billing** — bill projection computed against actual MSEDCL telescopic tariff breakpoints
+- **Carbon translation** — kWh converted to kg CO₂, equivalent trees, and equivalent km driven
+- **Proactive insights** — automated flags for spikes and upcoming slab-threshold breaches
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] Add authentication (JWT-based user sessions)
+- [ ] Multi-state tariff support beyond Maharashtra
+- [ ] Automated test suite (pytest + Vitest)
+- [ ] CI/CD pipeline (GitHub Actions)
+- [ ] Historical bill upload via OCR
+
+---
+
+## 🤝 Contributing
+
+Issues and PRs are welcome. For major changes, open an issue first to discuss scope.
+
+```bash
+git checkout -b feature/your-feature
+git commit -m "feat: description"
+git push origin feature/your-feature
+```
+
+---
+
+## 📄 License
+
+Distributed under the MIT License. See [`LICENSE`](./LICENSE) for details.
+
+---
+
+<div align="center">
+
+Built by **Rohan Acharya** ([@R0han2906](https://github.com/R0han2906))
+
+</div>
